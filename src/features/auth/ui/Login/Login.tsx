@@ -30,7 +30,6 @@ export const Login = () => {
   const {
     register,
     handleSubmit,
-    reset,
     control,
     formState: { errors },
   } = useForm<Inputs>({
