@@ -5,17 +5,14 @@ import { Todolists } from "@/features/todolists/ui/Todolists/Todolists"
 import Container from "@mui/material/Container"
 import Grid from "@mui/material/Grid2"
 import { Navigate, useNavigate } from "react-router"
+import { useCreateTodolistMutation } from "@/features/todolists/api/todolistsApi.ts"
 
 export const Main = () => {
   // const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
-  const dispatch = useAppDispatch()
+  const [createTodolist] = useCreateTodolistMutation()
 
-  const navigate = useNavigate()
-
-  const createTodolist = (title: string) => {
-    dispatch(createTodolistTC(title))
-  }
+  // const navigate = useNavigate()
 
   // useEffect(() => {
   //   if (!isLoggedIn) {
