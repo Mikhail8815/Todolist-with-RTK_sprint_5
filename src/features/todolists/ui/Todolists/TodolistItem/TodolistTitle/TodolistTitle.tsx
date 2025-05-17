@@ -3,7 +3,13 @@ import { type DomainTodolist } from "@/features/todolists/model/todolists-slice"
 import DeleteIcon from "@mui/icons-material/Delete"
 import IconButton from "@mui/material/IconButton"
 import styles from "./TodolistTitle.module.css"
-import { useChangeTodolistTitleMutation, useDeleteTodolistMutation } from "@/features/todolists/api/todolistsApi.ts"
+import {
+  todolistsApi,
+  useChangeTodolistTitleMutation,
+  useDeleteTodolistMutation,
+} from "@/features/todolists/api/todolistsApi.ts"
+import { useAppDispatch } from "@/common/hooks"
+import { RequestStatus } from "@/common/types"
 
 type Props = {
   todolist: DomainTodolist
@@ -15,8 +21,26 @@ export const TodolistTitle = ({ todolist }: Props) => {
   const [deleteTodolist] = useDeleteTodolistMutation()
   const [changeTodolistTitle] = useChangeTodolistTitleMutation()
 
+  const dispatch = useAppDispatch()
+
+  const changeTodolistStatus = (entityStatus: RequestStatus) => {
+    dispatch(
+      todolistsApi.util.updateQueryData("getTodolists", undefined, (state) => {
+        const todolist = state.find((todolist) => todolist.id === id)
+        if (todolist) {
+          todolist.entityStatus = entityStatus
+        }
+      }),
+    )
+  }
+
   const deleteTodolistHandler = () => {
+    changeTodolistStatus("loading")
     deleteTodolist(id)
+      .unwrap()
+      .catch(() => {
+        changeTodolistStatus("idle")
+      })
   }
 
   const changeTodolistTitleHandler = (title: string) => {
