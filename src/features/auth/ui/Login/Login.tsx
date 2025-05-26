@@ -15,8 +15,8 @@ import { Controller, type SubmitHandler, useForm } from "react-hook-form"
 import styles from "./Login.module.css"
 import { useNavigate } from "react-router"
 import { Path } from "@/common/routing"
-import { useEffect } from "react"
-import { useLoginMutation } from "@/features/auth/api/authApi.ts"
+import { useEffect, useState } from "react"
+import { useGetCaptchaQuery, useLoginMutation } from "@/features/auth/api/authApi.ts"
 import { ResultCode } from "@/common/enums"
 import { AUTH_TOKEN } from "@/common/constants"
 
@@ -31,15 +31,20 @@ export const Login = () => {
 
   const [login] = useLoginMutation()
 
+  const [showCaptcha, setShowCaptcha] = useState(false);
+  const { data: captchaData, refetch: refreshCaptcha } = useGetCaptchaQuery(undefined, { skip: !showCaptcha });
+
+
   const {
     register,
     handleSubmit,
     control,
     reset,
+    setError,
     formState: { errors },
   } = useForm<Inputs>({
     resolver: zodResolver(loginSchema),
-    defaultValues: { email: "", password: "", rememberMe: false },
+    defaultValues: { email: "", password: "", rememberMe: false, captcha: "" },
   })
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
@@ -48,6 +53,14 @@ export const Login = () => {
         dispatch(setIsLoggedInAC({ isLoggedIn: true }))
         localStorage.setItem(AUTH_TOKEN, res.data.data.token)
         reset()
+      } else if (res.data?.resultCode === ResultCode.CaptchaError) {
+        // Код 10 означает, что требуется каптча
+        setShowCaptcha(true);
+        refreshCaptcha();
+        setError("root", {
+          type: "manual",
+          message: "Please complete the captcha",
+        });
       }
     })
     // reset()
@@ -108,6 +121,27 @@ export const Login = () => {
                 />
               }
             />
+
+            {showCaptcha && captchaData && (
+            <div>
+              <img src={captchaData.url} alt="captcha" onClick={refreshCaptcha} style={{ cursor: "pointer" }} />
+              <TextField
+                label="Captcha"
+                margin="normal"
+                fullWidth
+                error={!!errors.captcha}
+                {...register("captcha")}
+              />
+              {errors.captcha && (
+                <span className={styles.errorMessage}>{errors.captcha.message}</span>
+              )}
+            </div>
+          )}
+          
+          {errors.root && (
+            <span className={styles.errorMessage}>{errors.root.message}</span>
+          )}
+
             <Button type="submit" variant="contained" color="primary">
               Login
             </Button>

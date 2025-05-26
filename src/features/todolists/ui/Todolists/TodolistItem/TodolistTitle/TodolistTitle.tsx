@@ -18,30 +18,67 @@ type Props = {
 export const TodolistTitle = ({ todolist }: Props) => {
   const { id, title, entityStatus } = todolist
 
-  const [deleteTodolist] = useDeleteTodolistMutation()
+  const [removeTodolist] = useDeleteTodolistMutation()
   const [changeTodolistTitle] = useChangeTodolistTitleMutation()
 
   const dispatch = useAppDispatch()
+ 
+  // Без optimistic update
 
-  const changeTodolistStatus = (entityStatus: RequestStatus) => {
-    dispatch(
-      todolistsApi.util.updateQueryData("getTodolists", undefined, (state) => {
-        const todolist = state.find((todolist) => todolist.id === id)
-        if (todolist) {
-          todolist.entityStatus = entityStatus
-        }
-      }),
-    )
-  }
+  // const changeTodolistStatus = (entityStatus: RequestStatus) => {
+  //   dispatch(
+  //     todolistsApi.util.updateQueryData("getTodolists", undefined, (state) => {
+  //       const todolist = state.find((todolist) => todolist.id === id)
+  //       if (todolist) {
+  //         todolist.entityStatus = entityStatus
+  //       }
+  //     }),
+  //   )
+  // }
 
-  const deleteTodolistHandler = () => {
-    changeTodolistStatus("loading")
-    deleteTodolist(id)
-      .unwrap()
-      .catch(() => {
-        changeTodolistStatus("idle")
-      })
-  }
+  // const deleteTodolist = async () => {
+  //   changeTodolistStatus("loading")
+  //   removeTodolist(id)
+  //     .unwrap()
+  //     .catch(() => {
+  //       changeTodolistStatus("idle")
+  //     })
+  // }
+
+
+  // С optimistic update
+
+  const deleteTodolist = () => {
+  // const patchResult = dispatch(
+  //   todolistsApi.util.updateQueryData('getTodolists', undefined, state => {
+      //Дизэйбл тудулиста
+
+      // const todolist = state.find(todolist => todolist.id === id)
+      // if (todolist) {
+      //   todolist.entityStatus = 'loading'
+      // }
+      
+      // Удаление тудулиста
+  //     const index = state.findIndex(todolist => todolist.id === id)
+  //           if (index !== -1) {
+  //             state.splice(index, 1)
+  //           }
+  //   })
+  // )
+  // try {
+  //   const res = await removeTodolist("id")
+  //   if (res.error) {
+  //     patchResult.undo()
+  //   }
+  // } catch {
+  //   patchResult.undo()
+  // }
+
+  removeTodolist(id)
+  
+  // равносильная запись
+  // dispatch(todolistsApi.endpoints.deleteTodolist.initiate(id))
+}
 
   const changeTodolistTitleHandler = (title: string) => {
     changeTodolistTitle({ id, title })
@@ -52,7 +89,7 @@ export const TodolistTitle = ({ todolist }: Props) => {
       <h3>
         <EditableSpan value={title} onChange={changeTodolistTitleHandler} />
       </h3>
-      <IconButton onClick={deleteTodolistHandler} disabled={entityStatus === "loading"}>
+      <IconButton onClick={deleteTodolist} disabled={entityStatus === "loading"}>
         <DeleteIcon />
       </IconButton>
     </div>

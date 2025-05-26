@@ -5,9 +5,11 @@ import { handleError } from "@/common/utils/handleError"
 export const baseApi = createApi({
   reducerPath: "todolistsApi",
   tagTypes: ["Todolists", "Tasks"],
+    refetchOnReconnect: true,
   baseQuery: async (args, api, extraOptions) => {
     const result = await fetchBaseQuery({
       baseUrl: "https://social-network.samuraijs.com/api/1.1",
+      credentials: 'include',
       // baseUrl: import.meta.env.VITE_BASE_URL,
       prepareHeaders: (headers) => {
         headers.set("API-KEY", import.meta.env.VITE_API_KEY)

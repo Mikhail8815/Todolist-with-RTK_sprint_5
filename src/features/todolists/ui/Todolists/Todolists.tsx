@@ -14,7 +14,7 @@ export const Todolists = () => {
   // useEffect(() => {
   //   dispatch(fetchTodolistsTC())
   // }, [])
-  const { data: todolists, isLoading, isFetching } = useGetTodolistsQuery()
+  const { data: todolists, isLoading } = useGetTodolistsQuery()
 
   if (isLoading) {
     return <Box sx={containerSx} style={{ gap: "32px" }}>

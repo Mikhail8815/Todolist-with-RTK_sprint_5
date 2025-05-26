@@ -1,7 +1,7 @@
 import { instance } from "@/common/instance"
 import type { BaseResponse } from "@/common/types"
 import type { Todolist } from "./todolistsApi.types"
-import { DomainTodolist } from "@/features/todolists/model/todolists-slice.ts"
+import { DomainTodolist } from "../lib/types"
 import { baseApi } from "@/app/baseApi.ts"
 
 export const todolistsApi = baseApi.injectEndpoints({
@@ -25,6 +25,21 @@ export const todolistsApi = baseApi.injectEndpoints({
         url: `/todo-lists/${id}`,
         method: "DELETE",
       }),
+      async onQueryStarted(id: string, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          todolistsApi.util.updateQueryData('getTodolists', undefined, state => {
+            const todolist = state.find(todolist => todolist.id === id)
+            if (todolist) {
+              todolist.entityStatus = 'loading'
+            }
+          })
+        )
+        try {
+          await queryFulfilled
+        } catch {
+          patchResult.undo()
+        }
+      },
       invalidatesTags: ["Todolists"],
     }),
     changeTodolistTitle: build.mutation<BaseResponse, { id: string; title: string }>({
