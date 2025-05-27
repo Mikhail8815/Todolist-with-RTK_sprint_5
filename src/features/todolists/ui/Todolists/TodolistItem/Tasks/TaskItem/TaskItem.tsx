@@ -1,7 +1,7 @@
 import { EditableSpan } from "@/common/components/EditableSpan/EditableSpan"
 import { TaskStatus } from "@/common/enums"
 import type { DomainTask } from "@/features/todolists/api/tasksApi.types"
-import type { DomainTodolist } from "@/features/todolists/model/todolists-slice"
+import type { DomainTodolist } from "@/features/todolists/lib/types"
 import DeleteIcon from "@mui/icons-material/Delete"
 import Checkbox from "@mui/material/Checkbox"
 import IconButton from "@mui/material/IconButton"
@@ -35,7 +35,6 @@ export const TaskItem = ({ task, todolist }: Props) => {
     const model = createTaskModel(task, { title })
     updateTask({ taskId: task.id, todolistId: todolist.id, model })
   }
-
   const isTaskCompleted = task.status === TaskStatus.Completed
   const disabled = todolist.entityStatus === "loading"
 

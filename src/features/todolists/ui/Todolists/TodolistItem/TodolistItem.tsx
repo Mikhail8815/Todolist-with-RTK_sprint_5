@@ -1,4 +1,4 @@
-import type { DomainTodolist } from "@/features/todolists/model/todolists-slice"
+import type { DomainTodolist } from "@/features/todolists/lib/types"
 import { FilterButtons } from "./FilterButtons/FilterButtons"
 import { Tasks } from "./Tasks/Tasks"
 import { TodolistTitle } from "./TodolistTitle/TodolistTitle"

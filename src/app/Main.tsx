@@ -5,21 +5,8 @@ import Grid from "@mui/material/Grid2"
 import { useCreateTodolistMutation } from "@/features/todolists/api/todolistsApi.ts"
 
 export const Main = () => {
-  // const isLoggedIn = useAppSelector(selectIsLoggedIn)
 
   const [createTodolist] = useCreateTodolistMutation()
-
-  // const navigate = useNavigate()
-
-  // useEffect(() => {
-  //   if (!isLoggedIn) {
-  //     navigate(Path.Login)
-  //   }
-  // }, [isLoggedIn])
-
-  // if (!isLoggedIn) {
-  //   return <Navigate to={Path.Login} />
-  // }
 
   return (
     <Container maxWidth={"lg"}>

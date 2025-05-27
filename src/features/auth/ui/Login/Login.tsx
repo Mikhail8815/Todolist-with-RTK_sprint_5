@@ -63,7 +63,6 @@ export const Login = () => {
         });
       }
     })
-    // reset()
   }
 
   useEffect(() => {
@@ -71,10 +70,6 @@ export const Login = () => {
       navigate(Path.Main)
     }
   }, [isLoggedIn])
-
-  // if (isLoggedIn) {
-  //   return <Navigate to={Path.Main} />
-  // }
 
   return (
     <Grid container justifyContent={"center"}>

@@ -1,5 +1,5 @@
 import type { RequestStatus } from "@/common/types"
-import { _tasksApi, tasksApi } from "@/features/todolists/api/tasksApi"
+import { tasksApi } from "@/features/todolists/api/tasksApi"
 import { todolistsApi } from "@/features/todolists/api/todolistsApi"
 import { createSlice, isFulfilled, isPending, isRejected } from "@reduxjs/toolkit"
 

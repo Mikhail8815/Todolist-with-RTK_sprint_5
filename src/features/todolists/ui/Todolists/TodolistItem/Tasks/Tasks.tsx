@@ -6,7 +6,6 @@ import { useGetTasksQuery } from "@/features/todolists/api/tasksApi.ts"
 import { TasksSkeleton } from "./TasksSkeleton/TasksSkeleton"
 import { useState } from "react"
 import { TasksPagination } from "@/features/todolists/ui/Todolists/TodolistItem/Tasks/TasksPagination/TasksPagination.tsx"
-import { PAGE_SIZE } from "@/common/constants"
 
 type Props = {
   todolist: DomainTodolist

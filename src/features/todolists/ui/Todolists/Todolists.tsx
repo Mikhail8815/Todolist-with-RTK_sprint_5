@@ -7,13 +7,7 @@ import { containerSx } from "@/common/styles"
 import { TodolistSkeleton } from "./TodolistSkeleton/TodolistSkeleton"
 
 export const Todolists = () => {
-  // const todolists = useAppSelector(selectTodolists)
-  //
-  // const dispatch = useAppDispatch()
-  //
-  // useEffect(() => {
-  //   dispatch(fetchTodolistsTC())
-  // }, [])
+
   const { data: todolists, isLoading } = useGetTodolistsQuery()
 
   if (isLoading) {
