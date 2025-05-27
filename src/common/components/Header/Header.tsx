@@ -19,7 +19,6 @@ import LinearProgress from "@mui/material/LinearProgress"
 import { useLogoutMutation } from "@/features/auth/api/authApi.ts"
 import { ResultCode } from "@/common/enums"
 import { AUTH_TOKEN } from "@/common/constants"
-import { clearDataAC } from "@/common/actions"
 import { baseApi } from "@/app/baseApi.ts"
 
 export const Header = () => {
